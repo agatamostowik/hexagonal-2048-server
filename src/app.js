@@ -9,7 +9,10 @@ export const initApp = () => {
   // Global middlewares
   app.use(
     cors({
-      origin: ["hexagonal-2048.up.railway.app", "http://localhost:3000"],
+      origin: [
+        "https://hexagonal-2048.up.railway.app",
+        "http://localhost:3000",
+      ],
     })
   );
   app.use(bodyParser.json());
