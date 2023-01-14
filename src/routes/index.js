@@ -19,12 +19,25 @@ const createGrid = (values) => {
   }, []);
 };
 
+let cache = {};
+
+const createOrGetCachedGrid = (radius) => {
+  if (radius in cache) {
+    return cache[radius];
+  } else {
+    const rangeOfValues = _.range(-(radius - 1), radius);
+    const grid = createGrid(rangeOfValues);
+
+    cache = { ...cache, [radius]: grid };
+    return grid;
+  }
+};
+
 rootRouter.post("/api/:radius", (req, res) => {
   const radius = req.params.radius;
   const occupiedCells = req.body;
 
-  const rangeOfValues = _.range(-(radius - 1), radius);
-  const grid = createGrid(rangeOfValues);
+  const grid = createOrGetCachedGrid(radius);
 
   if (occupiedCells.length === 0) {
     const randomlyPickedCells = _.sampleSize(grid, 3);
